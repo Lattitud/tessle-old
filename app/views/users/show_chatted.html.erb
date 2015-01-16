@@ -1,0 +1,31 @@
+<!-- Runs when /users/1/chatted is accessed -->
+
+<% provide(:title, @title) %>
+<div class="row-fluid">
+  <aside class="col-md-3 white_box" id="user_sidebar">
+    <section>
+      <%= render 'shared/user_info' %>
+    </section>
+      <%= render 'shared/stats' %>
+      <% if signed_in? %>
+        <% if current_user?(@user) %>
+          <%= render 'shared/user_buttons' %>
+        <% else %>
+          <%= render 'shared/other_user_buttons' %>
+        <% end %>
+      <% end %>
+  </aside>
+  <div class="col-md-9 white_box">
+    <% if @user.votes.any? %>
+    <h3>Chatted (<%= @user.votes.count %>)</h3>
+    <ol class="posts">
+      <%= render @chatted_posts %>
+    </ol>
+    <div id="append_and_paginate" class="center">
+      <%= will_paginate @chatted_posts %>
+    </div>
+    <% else %>
+    <h3>Nothing Chatted About</h3>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<ul class="user_menu_buttons list-style">
+  <li>
+  <%= render 'users/follow_form' %>
+  </li>
+  <li>
+  <%= link_to 'Message', private_chat_user_path(@user), remote: true %>
+  </li>
+</ul>

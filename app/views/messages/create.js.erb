@@ -1,0 +1,15 @@
+var $dock_chatbox = $('#<%= @messageable_type_lower %>_chatbox_inner<%= @messageable_id %>');
+var $sidebar_chat = $('#side-chat-body');
+
+$('#new_<%= @messageable_type_lower %>_chat<%= @messageable_id %>').append("<%= j(render partial: @message) %>");
+if ($dock_chatbox.length) {
+  var myDiv = document.getElementById("<%= @messageable_type_lower %>_chatbox_inner<%= @messageable_id %>");
+  myDiv.scrollTop = myDiv.scrollHeight;
+}
+else if ($sidebar_chat.length) {
+  var myDiv = document.getElementById("side-chat-body");
+  myDiv.scrollTop = myDiv.scrollHeight;
+}
+
+$('#new_<%= @messageable_type_lower %>_message<%= @messageable_id %>')[0].reset();
+$("#<%= @messageable_type_lower %>_send_button<%= @messageable_id %>").css("background-position", "0 -357px");

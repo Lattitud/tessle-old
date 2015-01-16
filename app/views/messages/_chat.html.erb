@@ -1,0 +1,21 @@
+<div class="chatbox_header">
+  <b><a href="<%= @messageable %>" target="_blank"><%= @messageable.title %> | Chat</a></b>
+  <a href="javascript: void(0);" id="hide_post_chat<%= @messageable.id %>" class="hide_chat_link">&#8211;</a>
+  <a href="javascript: void(0);" id="destroy_post_chat<%= @messageable.id %>" class="destroy_chat_link">x</a>
+</div>
+
+<div id="post_chatbox_inner<%= @messageable.id %>" class="chatbox_inner">
+  <ul id="old_post_chat<%= @messageable.id %>" class="chat">
+    <% if @past_messages.any? %>
+    <%= render partial: "messages/message", collection: @past_messages %>
+    <p class="time-display">last message <%= time_ago_in_words(@past_messages.last.created_at) %> ago</p>
+    <% else %>
+    <p class="time-display">no previous messages.. be the first one!</p>
+    <% end %>
+    <li class="divider"></li>
+  </ul>
+
+  <ul id="new_post_chat<%= @messageable.id %>" class="chat"></ul>
+</div>
+
+<%= render :partial => 'form', :locals => {:user_id => current_user.id } %>

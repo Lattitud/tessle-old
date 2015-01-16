@@ -1,0 +1,19 @@
+<div id="frame">
+  <% if user_signed_in? %>
+    <a class="item post" href="#create-post">
+    </a>
+    <a class="item chat" href="<%= chatted_user_path(current_user) %>" title="Chatted">
+    </a>
+    <a class="item home" href="<%= root_url %>" title="Home">
+    </a>
+    <%= link_to "", signout_path, method: "delete", title: "Sign out", class: "item search" %>
+    <a class="item settings" href="<%= edit_user_registration_path %>" title="Settings">
+    </a>
+  <% else %>
+    <a class="item home" href="<%= root_url %>" title="Home"></a>
+  <% end %>
+  
+  <div id="plus">
+    
+  </div>
+</div>

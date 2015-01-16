@@ -1,0 +1,16 @@
+<% @user ||= current_user %>
+<center>
+<a href="<%= user_path(@user) %>">
+  <%= image_tag @user.avatar.url(:thumb), class: "img-circle", width: 100, height: 100, style: "margin-bottom: 10px;" %>
+</a>
+<h1 class="center">
+  <%= link_to @user.user_name, @user, class: "user_link" %>
+  <% if Pusher.get("/channels/private-#{@user.id}")[:occupied] %>
+    <div class="online_circle"></div>
+  <% end %>
+</h1>
+<% if @user.admin? %>
+  <!-- <span id="admin_user" class="center">Administrator</span> -->
+<% end %>
+<span id="user_credits" class="center">Coins: <%= @user.karma %></span>
+</center>

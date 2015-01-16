@@ -1,0 +1,15 @@
+<!-- Rails fakes DELETE with Javascript -->
+
+<li>
+  <a href="<%= user_path(user) %>" style="text-decoration: none;">
+    <%= image_tag user.avatar.url(:thumb), class: "img-circle", width: 52, height: 52 %>
+  </a>
+  <% if Pusher.get("/channels/private-#{user.id}")[:occupied] %>
+    <div class="online_circle"></div>
+  <% end %>
+  <%= link_to user.user_name, user %>
+  <% if signed_in? && current_user.admin? && !current_user?(user) %>
+    | <%= link_to "delete", user, method: :delete,
+                                  data: { confirm: "You sure?" } %>
+  <% end %>
+</li>

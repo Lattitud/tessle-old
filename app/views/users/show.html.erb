@@ -1,0 +1,36 @@
+<!-- Displays on calls to users/1/ -->
+
+<% provide(:title, @user.user_name) %>
+
+<div class="container">
+<div class="row">
+  <aside class="offset-md-1 col-sm-4 col-md-3 white_box" id="user_sidebar">
+    <section>
+      <%= render 'shared/user_info' %>
+    </section>
+      <%= render 'shared/stats' %>
+      <% if user_signed_in? %>
+        <% if current_user?(@user) %>
+          <%= render 'shared/user_buttons' %>
+        <% else %>
+          <%= render 'shared/other_user_buttons' %>
+        <% end %>
+      <% end %>
+  </aside>
+
+  <div class="col-md-9">
+    <% if @user.posts.any? %>
+    <h3>Posts (<%= @user.posts.count %>)</h3>
+    <ol class="posts list-style">
+      <!-- This references partial posts/_post.html.erb -->
+      <%= render @posts %>
+    </ol>
+    <div id="append_and_paginate" class="center">
+      <%= will_paginate @posts %>
+    </div>
+    <% else %>
+    <h3>No current posts</h3>
+    <% end %>
+  </div>
+</div>
+</div>

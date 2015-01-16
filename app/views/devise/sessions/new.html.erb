@@ -1,0 +1,39 @@
+<% provide(:title, 'login') %>
+
+<div class="main-login">
+  <section class="social-login">
+    <div class="row-fluid">
+      <div class="col-sm-5 offset-4 absolute-center" style="height: 442px;">
+        <h1 class="login-tessle">tessle</h1>
+        <div class="login-description">welcome back</div>
+        <div class="login-div">
+          <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
+          <div class="login-pw">
+            <%= f.input :login, placeholder: "Username or Email", label: false, :required => true, :autofocus => true %>
+            <hr style="margin: 0;" />
+            <%= f.input :password, :required => true, label: false, placeholder: "Password" %>
+          </div>
+          <%= f.input :remember_me, required: false, :as => :boolean if devise_mapping.rememberable? %>
+
+          <%= f.button :submit, "login", id: "login_button" %>
+          <% end %>
+
+          <div class="login-with">Login with:</div>
+          <ul class="social-login-list">
+            <li class="social-login-list-item">
+              <%= link_to "twitter", user_omniauth_authorize_path(:twitter) %>
+            </li>
+            <li class="social-login-list-item">
+              <%= link_to "facebook", user_omniauth_authorize_path(:facebook) %>
+            </li>
+            <li class="social-login-list-item">
+              <%= link_to "google", user_omniauth_authorize_path(:google_oauth2) %>
+            </li>
+          </ul>
+          <div class="login-bottom-padding"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

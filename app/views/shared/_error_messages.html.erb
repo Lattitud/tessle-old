@@ -1,0 +1,13 @@
+<% if object.errors.any? %>
+  <div id="error_explanation">
+    <div id="main_error_alert" class="alert alert-error">
+    <a class="close" id="close_error" href="javascript: void(0);" onclick="document.getElementById('main_error_alert').style.display = 'none';">&times;</a>
+      The form contains <%= pluralize(object.errors.count, "error") %>.
+    </div>
+    <ul>
+    <% object.errors.full_messages.each do |msg| %>
+      <li>* <%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

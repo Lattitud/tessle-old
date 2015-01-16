@@ -1,0 +1,20 @@
+<div class="chatbox_header">
+<b><% if Pusher.get("/channels/private-#{@recipient.id}")[:occupied] %><div class="online_circle" style="margin-right: 5px;"></div><% end %><a href="<%= user_path(@recipient) %>" target="_blank" >Chat with <%= @recipient.name %></a></b>
+<a href="javascript: void(0);" id="hide_private_chat<%= @recipient.id %>" class="hide_chat_link">&#8211;</a>
+<%= link_to "x", remove_chat_user_path(@recipient), id: "destroy_private_chat#{@recipient.id}", class: 'destroy_chat_link', remote: true %>
+</div>
+
+<div id="private_chatbox_inner<%= @recipient.id %>" class="chatbox_inner">
+  <ul id="old_private_chat<%= @recipient.id %>" class="chat list-style">
+    <% if @past_private_messages.any? %>
+    <%= render partial: "private_messages/private_message", collection: @past_private_messages %>
+    <p class="time-display">last message <%= time_ago_in_words(@past_private_messages.last.created_at) %> ago</p>
+    <% else %>
+    <p class="time-display">no previous messages..</p>
+    <% end %>
+    <li class="divider"></li>
+  </ul>
+  <ul id="new_private_chat<%= @recipient.id %>" class="chat list-style"></ul>
+</div>
+
+<%= render :partial => 'private_messages/form', :locals => {:recipient_id => @recipient.id } %>

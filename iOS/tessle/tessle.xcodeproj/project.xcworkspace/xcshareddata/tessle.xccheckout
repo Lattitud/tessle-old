@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>9F80D067-51E5-48C2-B533-0A5F47ECB21B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>tessle</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>F00F6096-924C-4F6F-8449-0F883227018F</key>
+		<string>https://github.com/dsun412/tessle.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>iOS/tessle/tessle.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>F00F6096-924C-4F6F-8449-0F883227018F</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/dsun412/tessle.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>F00F6096-924C-4F6F-8449-0F883227018F</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F00F6096-924C-4F6F-8449-0F883227018F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>tessle</string>
+		</dict>
+	</array>
+</dict>
+</plist>

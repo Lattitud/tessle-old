@@ -1,0 +1,16 @@
+<% notifications_num = PrivateMessage.where("sender_id = :private_user_id AND recipient_id = :recipient_id", {private_user_id: private_user.id, recipient_id: current_user.id}).unread_by(current_user).count %>
+<li id="private_user<%= private_user.id %>">
+  <%= link_to(private_chat_user_path(private_user), remote: true) do %>
+    <center>
+    <%= image_tag private_user.avatar.url(:thumb), class: "img-circle", width: 125, height: 125, style: "margin-top: 20px;" %>
+    </center>
+    <% unless notifications_num == 0 %>
+      <span class="notification private-notification"><%= notifications_num %></span>
+    <% end %>
+    <div class="user_name"><%= private_user.name %></div>
+    <div class="time_ago"><%= time_ago_in_words(private_user.updated_at) %> ago</div>
+    <% if Pusher.get("/channels/private-#{private_user.id}")[:occupied] %>
+      <div class="online_circle"></div>
+    <% end %>
+  <% end %>
+</li>

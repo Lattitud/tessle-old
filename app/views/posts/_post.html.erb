@@ -1,0 +1,48 @@
+<li id="<%= "post#{post.id}" %>">
+  <% if user_signed_in? && (current_user.following_user?(post.user) || current_user?(post.user)) %>
+    <div class="follow-post-block post-block">
+  <% else %>
+    <div class="no-follow-post-block post-block">
+  <% end %>
+
+    <div class="post-image-header">
+      <div class="post-image-block">
+        <span class="image_placeholder">
+            <%= image_tag post.image_url(:thumb), class: "img-circle" %>
+        </span>
+      </div>
+      <div class="post-header-block">
+        <div><p><%= Pusher.get("/channels/presence-post-#{post.id}", {:info => "user_count"})[:user_count] %> active</p></div>
+        <div><p>Posted <%= time_ago_in_words(post.created_at) %> ago</p></div>
+        <div><p><span id="post-user"><%= link_to post.user.user_name, post.user %></span></p></div>
+      </div>
+    </div>
+
+    <span class="post-title"><a href="<%= if post.url.blank? then post.image_url else post.url end %>" target="_blank"><%= post.title %></a></span>
+
+    <div class="post-chat-block">
+      <% if signed_in? %>
+        <%= link_to "", post, title: "chat", class: "post-chat-link diamond" %>
+      <% else %>
+        <%= link_to "", signup_path, title: "chat", class: "post-chat-link diamond" %>
+      <% end %>
+    </div>
+    <span class="chatted-number"><%= post.votes_for %> chatted</span>
+
+
+    <div class="post-tessles hidden-phone">
+      <span class="post-tessles-commas"><%= raw post.tag_list.map {|t| link_to t, tag_path(t)}.join(' ') %></span>
+    </div>
+
+    <ul class="post-button-block pull-right">
+      <li class="post-button">
+        <%= link_to "", post, class: "post-button-link" %>
+      </li>
+      <% if user_signed_in? and current_user?(post.user) or current_user.try(:admin?) %>
+      <li class="post-button post-delete-button">
+        <%= link_to "delete", post, method: :delete, data: { confirm: "Are you sure?" }, class: "post-delete-link" %>
+      </li>
+      <% end %>
+    </ul>
+  </div >
+</li>

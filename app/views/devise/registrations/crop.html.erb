@@ -1,0 +1,22 @@
+<div class="row-fluid">
+  <div class="span6 offset3">
+    <h1>Crop Avatar</h1>
+    <div class="jcrop">
+      <%= image_tag @user.avatar_url, id: "cropbox" %>
+    </div>
+
+    <h4>Preview</h4>
+    <div class="jcrop" style="width:100px; height:100px; overflow:hidden;">
+      <%= image_tag @user.avatar.url, id: "preview" %>
+    </div>
+
+    <%= form_for(@user, url: registration_path(@user), html: {method: :put}) do |f| %>
+    <% %w[x y w h].each do |attribute| %>
+    <%= f.hidden_field "crop_#{attribute}" %>
+    <% end %>
+    <div class="actions">
+      <%= f.submit "Crop" %>
+    </div>
+    <% end %>
+  </div>
+</div>

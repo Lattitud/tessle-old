@@ -1,0 +1,11 @@
+<li id="private_message<%= private_message.id %>">
+  <div id="private_message<%= private_message.id %>_div" class="<%= unless current_user?(private_message.sender) then "other_user_message" else "current_user_message" end %>">
+    <a href="<%= user_path(private_message.sender) %>" class="mini-avatar-link">
+      <%= image_tag private_message.sender.avatar.url(:mini) %>
+    </a>
+    <div class="message-div">
+      <p><%= private_message.content %></p>
+      <p class="message-details"><%= private_message.sender.user_name %></p>
+    </div>
+  </div>
+</li>

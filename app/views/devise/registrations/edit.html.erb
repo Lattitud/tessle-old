@@ -1,0 +1,53 @@
+<% provide(:title, 'Update Your Profile') %>
+
+<div class="row">
+  <aside class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-2">
+    <section>
+      <center>
+        <h3 class="center" style="color: #FF4E57; font-size: 25px; margin: 10% 0% 8% 0%;"><%= current_user.name %></h3>
+        <%= image_tag current_user.avatar.url(:thumb), class: "img-circle", width: 200, height: 200, id: "img_prev" %>
+        <div id="upload_file_wrapper">
+          <a href="javascript: void(0);" onclick="document.getElementById('file').click(); return false;" class="btn" id="upload_file">Upload Photo</a>
+        </div>
+        <%= render partial: "direct_upload_form" %>
+      </center>
+    </section>
+  </aside>
+  <div class="col-md-3 col-xs-8 col-xs-offset-2 col-md-offset-0" id="right_edit"style="margin-top: 3%;">
+
+    <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <div class="form-inputs">
+      <%= f.input :user_name, :required => true, :autofocus => true, :placeholder => "Username" %>
+      <%= f.input :email, :placeholder => "Email", :required => true %>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+      <% end %>
+
+      <%= f.input :password, :autocomplete => "off", :placeholder => "Password", :required => false %>
+      <%= f.input :password_confirmation, :autocomplete => "off", :placeholder => "Password Again", :required => false %>
+
+      <% if current_user.avatar.url.present? %>
+      <%= f.file_field :avatar %>
+      <% else %>
+
+      <% end %>
+      <%= f.hidden_field :remote_avatar_url, error: false %>
+
+      <% if f.object.encrypted_password.present? %>
+      <%= f.input :current_password, :placeholder => "current password update", :required => true %>
+      <% end %>
+    </div>
+
+      <%= f.button :submit, "Save", style: "text-shadow: none; margin-top: 40px; color:#fff; width: 40%; float: right;" %>
+    <% end %>
+    <div id="back_btn_wrapper">
+      <%= link_to "Nevermind", :back, class: "btn", id: "back_btn", style: "padding: 10px; width: 45%; height: 50px; padding-top: 13px; margin-top: 40px; background-color: #EEEEEE; color: #CECECE;" %>
+    </div>
+    <br />
+    <br />
+    <%= link_to "Deactivate account", registration_path(resource_name), id: "deactivate-account-link", :data => { :confirm => "Are you sure? It hurts master." }, :method => :delete %>
+  </div>
+</div>

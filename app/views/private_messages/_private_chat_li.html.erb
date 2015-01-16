@@ -1,0 +1,7 @@
+<li id='chat_li_private-<%= @recipient.id %>' class='float_right gray_gradient'>
+  <%= link_to "x", remove_chat_user_path(@recipient), id: "close_private_chat#{@recipient.id}", class: 'remove_chat_link', remote: true %>
+  <a href='javascript: void(0);' id='show_private_chat<%= @recipient.id %>' class='show_chat_link'><%= @recipient.user_name %></a>
+  <div id='private_chat<%= @recipient.id %>' class='chat_post chat-form-bottom'>
+    <%= render 'private_messages/private_chat' %>
+  </div>
+</li>

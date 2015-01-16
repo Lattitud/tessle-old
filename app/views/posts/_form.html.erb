@@ -1,0 +1,49 @@
+<div class="new-post" id="create-post">
+  <div class="new-post-inner">
+    <%= simple_form_for @post do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <div class="new-title-description">
+      <%= f.input :title, placeholder: "Create a post...",
+      input_html: { :id => "post_title", autocomplete: 'off' }, label: false, error: false %>
+    </div>
+
+    <div class="tab-content">
+      <%= f.input :tag_list,label: false,
+    placeholder: "Tags: Funny, Cat, Videos",
+    input_html: { "data-load" => @post.tags.map(&:attributes).to_json,
+      :id => "post_tessles" }, error: false %>
+      <div class="tab-pane active" id="link">
+        <%= f.input :url, placeholder: "Add a link", input_html: { :id => "post_url" }, label: false, error: false %>
+      </div>
+
+      <div class="tab-pane" id="photo">
+        <%= f.file_field :image, label: "Upload a picture", error: false, onchange: "readLocalURL(this);" %>
+        <div id="upload_file_wrapper">
+        <a href="javascript: void(0);" onclick="document.getElementById('file').click(); return false;" class="button" id="upload_file">Upload File</a>
+        <div id="posts_container"></div>
+        <script id="template-upload" type="text/x-tmpl">
+        <div id="file-{%=o.unique_id%}" class="upload">
+        {%=o.name%}
+        <div class="progress"><div class="bar" style="width: 0%"></div></div>
+        </div>
+        </script>
+      </div>
+        <%= f.hidden_field :remote_image_url, error: false %>
+        <%= f.hidden_field :direct_upload_url, error: false %>
+      </div>
+
+      <div class="tab-pane" id="text">
+      </div>
+    </div>
+
+    <div id="preview_img"></div>
+
+      <%= submit_tag 'Clear', type: :reset, class: "cancel" %>
+      <%= f.button :submit, "Post", id: "new_post_button" %>
+
+      <% end %>
+
+      <%= render partial: "posts/direct_upload_form" %>
+    </div>
+  </div>

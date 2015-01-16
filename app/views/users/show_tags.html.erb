@@ -1,0 +1,35 @@
+<!-- Runs when /users/1/tessles is accessed -->
+<% provide(:title, @title) %>
+<div class="row-fluid">
+  <aside class="col-md-3 white_box" id="user_sidebar">
+    <section>
+      <%= render 'shared/user_info' %>
+    </section>
+      <%= render 'shared/stats' %>
+      <% if signed_in? %>
+        <% if current_user?(@user) %>
+          <%= render 'shared/user_buttons' %>
+        <% else %>
+          <%= render 'shared/other_user_buttons' %>
+        <% end %>
+      <% end %>
+  </aside>
+  <div class="col-md-9 white_box user_box">
+    <% unless @suggested_tags.nil? %>
+    <h3>Suggested Tags</h3>
+    <ul class="suggested_tessles">
+      <%= render partial: "tags/suggested_tag", collection: @suggested_tags %>
+    </ul>
+    <br />
+    <hr />
+    <% end %>
+    <% if @tags.any? %>
+    <h3 id="your_tessles">Tags (<%= @tags.count %>)</h3>
+    <ul class="tessles" id="user_tessles">
+      <%= render @tags %>
+    </ul>
+    <% else %>
+    <h3>You are currently following no tags</h3>
+    <% end %>
+  </div>
+</div>

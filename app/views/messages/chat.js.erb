@@ -1,0 +1,31 @@
+NProgress.start();
+var postChannel = socket.subscribe('presence-<%= @messageable_type_lower %>-<%= @messageable_id %>');
+var $side_span = $('#side-chatbar');
+
+$side_span.html('<%= j(render partial: "messages/side_chat") %>');
+
+$(function () {
+  var current_user_id = "<%= current_or_guest_user.id %>";
+  var myDiv = document.getElementById("side-chat-body");
+
+  postChannel.bind('new_<%= @messageable_type_lower %>_message', function(data) {
+    var post_chat_id = $('#new_<%= @messageable_type_lower %>_chat' + data.id);
+    
+    if(post_chat_id.length && (data.sender_id != current_user_id)) {
+      post_chat_id.append(data.html);
+      myDiv.scrollTop = myDiv.scrollHeight;
+    }
+  });
+
+  bindChatForm('<%= @messageable_id %>', '<%= @messageable_type_lower %>');
+
+  var $side_chat = $('.side-chat');
+  if($side_chat.length) {
+    $side_chat.css('height', $(window).height() - 100);
+    $side_chat.css('width', $('#side-chatbar').width());
+    $('#side-chat-body').css('height', $side_chat.height() - 113);
+  }
+  
+  myDiv.scrollTop = myDiv.scrollHeight;
+  NProgress.done();
+});

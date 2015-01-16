@@ -1,0 +1,5 @@
+$('#new_private_chat<%= @recipient_id %>').append("<%= j(render partial: @private_message) %>");
+var myDiv = document.getElementById("private_chatbox_inner<%= @recipient_id %>");
+myDiv.scrollTop = myDiv.scrollHeight;
+$('#new_private_message<%= @recipient_id %>')[0].reset();
+$("#private_send_button<%= @recipient_id %>").css("background-position", "0 -357px");

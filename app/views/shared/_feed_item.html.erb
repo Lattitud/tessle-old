@@ -1,0 +1,37 @@
+<li id="<%= "post#{feed_item.id}" %>">
+  <% if user_signed_in? && (current_user.following_user?(feed_item.user) || current_user?(feed_item.user)) %>
+    <div class="follow-post-block post-block">
+  <% else %>
+    <div class="no-follow-post-block post-block">
+  <% end %>
+
+    <div class="post-image-header">
+      <div class="post-image-block">
+        <span class="image_placeholder">
+            <%= image_tag feed_item.image_url(:thumb) %>
+        </span>
+      </div>
+      <div class="post-header-block">
+        <div><p><%= Pusher.get("/channels/presence-post-#{feed_item.id}", {:info => "user_count"})[:user_count] %> active</p></div>
+        <div><p>Posted <%= time_ago_in_words(feed_item.created_at) %> ago</p></div>
+        <div><p><span id="post-user"><%= link_to feed_item.user.user_name, feed_item.user %></span></p></div>
+      </div>
+    </div>
+
+    <div class="post-title"><a href="<%= if feed_item.url.blank? then feed_item.image_url else feed_item.url end %>" target="_blank"><%= feed_item.title %></a></div>
+    <div class="post-chat-block">
+      <%= link_to("", [:chat, feed_item], title: "chat", class: "diamond", remote: true) %>
+    </div>
+    <span class="chatted-number"><%= feed_item.votes_for %> chatted</span>
+
+    <div class="post-tessles hidden-phone">
+      <span class="post-tessles-commas"><%= raw feed_item.tag_list.map {|t| link_to t, tag_path(t)}.join(' ') %></span>
+    </div>
+
+    <ul class="post-button-block pull-right">
+      <li class="post-button">
+        <%= link_to "", feed_item, class: "post-button-link" %>
+      </li>
+    </ul>
+  </div >
+</li>

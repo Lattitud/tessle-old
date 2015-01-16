@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    <% unless signed_in? && notifications != 0 %>
+      <%= full_title(yield(:title)) %>
+    <% else %>
+      <%= "(#{notifications}) " + full_title(yield(:title)) %>
+    <% end %>
+  </title>
+  <%= jquery_include_tag Rails.application.config.jquery_version %>
+  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%= csrf_meta_tags %>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no' name='viewport'>
+  <%= render 'layouts/shim' %>
+
+  <!-- For third-generation iPad with high-resolution Retina display: -->
+  <!-- Size should be 144 x 144 pixels -->
+  <%= favicon_link_tag 'favicons/144x144favicon.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %>
+
+  <!-- For iPhone with high-resolution Retina display: -->
+  <!-- Size should be 114 x 114 pixels -->
+  <%= favicon_link_tag 'favicons/114x114favicon.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114' %>
+
+  <!-- For first- and second-generation iPad: -->
+  <!-- Size should be 72 x 72 pixels -->
+  <%= favicon_link_tag 'favicons/72x72favicon.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72' %>
+
+  <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+  <!-- Size should be 57 x 57 pixels -->
+  <%= favicon_link_tag 'favicons/57x57favicon.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '57x57' %>
+
+  <!-- For all other devices -->
+  <!-- Size should be 32 x 32 pixels -->
+  <%= favicon_link_tag 'favicons/tessle-favicon32.png', :rel => 'shortcut icon' %>
+
+  <!-- Pusher and Notifications -->
+  <% if Rails.env.development? %>
+  <script src="http://js.pusher.com/2.1/pusher.min.js"></script>
+  <% else %>
+  <script src="https://d3dy5gmtp8yhk7.cloudfront.net/2.1/pusher.min.js"></script>
+  <% end %>
+
+  <script type="text/javascript" charset="utf-8">
+    var socket = new Pusher("<%= Pusher.key %>"); // Replace with your app key
+    <% if user_signed_in? %>
+      $(function() {
+          var channel = socket.subscribe('private-'+<%= current_user.id %>); //This channel for notifications
+
+          // Some useful debug msgs
+          // socket.connection.bind('connecting', function() {
+          //   $('div#status').text('Connecting to Pusher...');
+          // });
+          // socket.connection.bind('connected', function() {
+          //   $('div#status').text('Connected to Pusher!');
+          // });
+          // socket.connection.bind('failed', function() {
+          //   $('div#status').text('Connection to Pusher failed :(');
+          // });
+          // channel.bind('subscription_error', function(status) {
+          //   $('div#status').text('Pusher subscription_error');
+          // });
+
+          channel.bind('new_notification', function(data) {
+            var header_notification = $('#header-unread-messages');
+            var dock_notification = $('#chat_li_private-' + data.id);
+            var header_notification_wrap = $('#header-private-link');
+            var current_title = $(document).attr('title');
+
+            //Adjusts header notifications
+            if(header_notification.length) {
+              var num_not = parseInt(header_notification.text(), 10);
+              num_not++;
+              header_notification.html(num_not);
+              document.title = current_title.replace(/(\d+)/, num_not);
+            }
+            else {
+              header_notification_wrap.html("<span id='header-unread-messages' class='notification'>1</span>");
+              document.title = "(1) " + current_title;
+            }
+            header_notification_wrap.css("background-position", "0 -135px");
+
+            //Adjusts dock notifications
+            if(dock_notification.length) {
+              dock_notification.addClass('dock-notification');
+            }
+            else {
+              //Add new li element to dock
+            }
+            $.titleAlert(data.from + " says...", {
+              interval: 1500
+            });
+
+          });
+      });
+    <% end %>
+  </script>
+</head>
+<body style='font-family: "Avenir", Helvetica, sans-serif;'>
+  <%= render "layouts/menu" %>
+  <div class="container-fluid">
+    <% flash.each do |key, value| %>
+    <div id="main_alert" class="alert alert-<%= key %> fade in">
+      <a class="close" href="javascript: void(0);" onclick="document.getElementById('main_alert').style.display = 'none';">&times;</a>
+      <%= value %>
+    </div>
+    <% end %>
+    <%= yield %>
+
+    <% if Rails.env.development? %>
+    <%= debug(params) %>
+    <div class="responsive-dump">
+      <h4>Visible on...</h4>
+      <p>Green checkmarks indicate that class is visible in your current viewport.</p>
+      <ul class="responsive-utilities-test">
+        <li>Phone<span class="visible-phone">&#10004; Phone</span></li>
+        <li>Tablet<span class="visible-tablet">&#10004; Tablet</span></li>
+        <li>Desktop<span class="visible-desktop">&#10004; Desktop</span></li>
+      </ul>
+      <h4>Hidden on...</h4>
+      <p>Here, green checkmarks indicate that class is hidden in your current viewport.</p>
+      <ul class="responsive-utilities-test hidden-on">
+        <li>Phone<span class="hidden-phone">&#10004; Phone</span></li>
+        <li>Tablet<span class="hidden-tablet">&#10004; Tablet</span></li>
+        <li>Desktop<span class="hidden-desktop">&#10004; Desktop</span></li>
+      </ul>
+    </div>
+    <% end %>
+
+  </div>
+
+  <ul id="chat_dock">
+    <% if user_signed_in? %>
+      <% user_session.get_chat_session.each do |chat_id| %>
+        <% usr = User.find(chat_id) %>
+
+        <li id='chat_li_private-<%= chat_id %>' class='float_right gray_gradient <%= "dock-notification" if PrivateMessage.where("sender_id = :private_user_id AND recipient_id = :recipient_id", {private_user_id: usr.id, recipient_id: current_user.id}).unread_by(current_user).count > 0 %>' style="width: 190px;">
+          <%= link_to "x", remove_chat_user_path(usr), id: "close_dock_chat#{chat_id}", class: 'remove_chat_link', remote: true %>
+          <%= link_to(private_chat_user_path(usr), id: "dock_chat_link_private-#{chat_id}", class: "show_chat_link", remote: true) do %>
+            <% if Pusher.get("/channels/private-#{chat_id}")[:occupied] %>
+            <div class="online_circle"></div>
+            <% end %>
+            <%= User.find(chat_id).name %>
+          <% end %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</body>
+</html>

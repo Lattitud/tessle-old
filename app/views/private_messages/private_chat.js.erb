@@ -1,0 +1,117 @@
+NProgress.start();
+var privateChannel = socket.subscribe('presence-private-<%= @presence_suffix %>');
+
+//Render on top of dock
+if ($('#dock_chat_link_private-<%= @recipient.id %>').length) {
+  $("#chat_li_private-<%= @recipient.id %>").html("<a href='javascript: void(0);' id='close_private_chat<%= @recipient.id %>' class='remove_chat_link'>x</a>" +
+    "<a href='javascript: void(0);' id='show_private_chat<%= @recipient.id %>' class='show_chat_link'>" +
+    "<%= @recipient.user_name %></a>" + 
+    "<div id='private_chat<%= @recipient.id %>' class='chat_post chat-form-bottom'><%= escape_javascript(render('private_messages/private_chat')) %></div>");
+}
+//Render new
+else if ($('#chat_li_private-<%= @recipient.id %>').length == 0) {
+  $('#chat_dock').append("<%= j render('private_messages/private_chat_li') %>");
+}
+
+$('#chat_li_private-<%= @recipient.id %>').css('width', '325px');
+$('#private_chat<%= @recipient.id %>').show();
+
+$(function() {
+  var myDiv = document.getElementById("private_chatbox_inner<%= @recipient.id %>");
+  var current_user_id = "<%= current_user.id %>";
+
+  privateChannel.bind('pusher:subscription_succeeded', function(members){
+    // $('#presence').empty();
+
+    members.each(add_member);
+    console.log("Count", members.count)
+  });
+
+  privateChannel.bind('pusher:member_removed', function(member){
+    // $('#presence_' + member.id).remove();
+    console.log("Count", privateChannel.members.count)
+  });
+
+  privateChannel.bind('pusher:member_added', function(member){
+    // add_member(member);
+    console.log("Count", privateChannel.members.count)
+  });
+
+  privateChannel.bind('new_private_message', function(data) {
+    var private_chat_id = $('#new_private_chat' + data.id);
+    if(private_chat_id.length && (data.id != current_user_id)) {
+      private_chat_id.append(data.html);
+      myDiv.scrollTop = myDiv.scrollHeight;
+    }
+  });
+
+  var typer = new Typer({
+    onStart: function() {
+      showTyping(privateChannel.members.me.id);
+    },
+    onTyping: function() {
+      if(privateChannel.subscribed) {
+        privateChannel.trigger('client-typing', {user_id: privateChannel.members.me.id});
+      }
+    },
+    onEnd: function() {
+      hideTyping(privateChannel.members.me.id);
+      if(privateChannel.subscribed) {
+        privateChannel.trigger('client-notTyping', {user_id: privateChannel.members.me.id});
+      }
+    }
+  });
+
+  bindChatForm('<%= @recipient.id %>', 'private');
+  bindChatDock('<%= @recipient.id %>', 'private', '<%= @presence_suffix %>');
+  myDiv.scrollTop = myDiv.scrollHeight;
+
+  // private_message_content.monitor(typer);
+
+  // privateChannel.bind('client-typing', function(data) {
+  //   var member = privateChannel.members.get(data.user_id);
+  //   member.info.typer.typing();
+  // });
+
+  // privateChannel.bind('client-notTyping', function(data) {
+  //   var member = privateChannel.members.get(data.user_id);
+  //   member.info.typer.notTyping();
+  // });
+
+  NProgress.done();
+});
+
+
+
+function add_member(member) {
+  var content;
+  var container = $("<div>", {
+    "class": "member",
+    id: "presence_" + member.id
+  });
+
+  if (member.info.avatar) {
+    content = $("<img>", {
+      src: member.info.avatar,
+      valign: "middle"
+    });
+  } else if (member.id == privateChannel.members.me.id) {
+    container.addClass("no-gravatar");
+    content = 'you are here';
+  } else {
+    content = null;
+  }
+
+  if (member.id == privateChannel.members.me.id) {
+    container.addClass("me");
+  }
+
+  if (member.id != privateChannel.members.me.id) {
+    member.info.typer = new Typer({
+      onStart: function() { showTyping(member.id) },
+      onEnd: function() { hideTyping(member.id) }
+    })
+  }
+
+  $('#presence').append(container.html(content));
+}

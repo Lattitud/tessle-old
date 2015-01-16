@@ -1,0 +1,37 @@
+NProgress.start();
+var postChannel = socket.subscribe('presence-<%= @messageable_type_lower %>-<%= @messageable_id %>');
+var post_chat_init = $('#<%= @messageable_type_lower %>_chat<%= @messageable_id %>');
+
+if ($('#dock_chat_link_<%= @messageable_type_lower %>_<%= @messageable_id %>').length) {
+  $('#chat_li_<%= @messageable_type_lower %>_<%= @messageable_id %>').html("<a href='javascript: void(0);' id='close_<%= @messageable_type_lower %>_chat<%= @messageable_id %>' class='remove_chat_link'>x</a>" +
+    "<a href='javascript: void(0);' id='show_<%= @messageable_type_lower %>_chat<%= @messageable_id %>' class='show_chat_link'><%= @messageable.title %></a>" + 
+    "<div id='<%= @messageable_type_lower %>_chat<%= @messageable_id %>' class='chat_post chat-form-bottom'><%= escape_javascript(render('messages/chat')) %></div>");
+}
+else if ($('#chat_li_<%= @messageable_type_lower %>_<%= @messageable_id %>').length == 0) {
+  $('#chat_dock').append("<li id='chat_li_<%= @messageable_type_lower %>_<%= @messageable_id %>' class='float_right gray_gradient'>" + 
+    "<a href='javascript: void(0);' id='close_<%= @messageable_type_lower %>_chat<%= @messageable_id %>' class='remove_chat_link'>x</a>" +
+    "<a href='javascript: void(0);' id='show_<%= @messageable_type_lower %>_chat<%= @messageable_id %>' class='show_chat_link'><%= @messageable.title %></a>" + 
+    "<div id='<%= @messageable_type_lower %>_chat<%= @messageable_id %>' class='chat_post chat-form-bottom'><%= escape_javascript(render('messages/chat')) %></div></li>");
+}
+
+$('#chat_li_<%= @messageable_type_lower %>_<%= @messageable_id %>').css('width', '325px');
+post_chat_init.show();
+
+$(function () {
+  var current_user_id = "<%= current_user.id %>";
+  var myDiv = document.getElementById("<%= @messageable_type_lower %>_chatbox_inner<%= @messageable_id %>");
+
+  postChannel.bind('new_<%= @messageable_type_lower %>_message', function(data) {
+    var post_chat_id = $('#new_<%= @messageable_type_lower %>_chat' + data.id);
+    
+    if(post_chat_id.length && (data.sender_id != current_user_id)) {
+      post_chat_id.append(data.html);
+      myDiv.scrollTop = myDiv.scrollHeight;
+    }
+  });
+
+  bindChatForm('<%= @messageable_id %>', '<%= @messageable_type_lower %>');
+  bindChatDock('<%= @messageable_id %>', '<%= @messageable_type_lower %>', '<%= @messageable_id %>');
+  myDiv.scrollTop = myDiv.scrollHeight;
+  NProgress.done();
+});

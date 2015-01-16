@@ -1,0 +1,10 @@
+<%= s3_uploader_form callback_url: users_avatar_url, callback_method: "POST", callback_param: "user[avatar_url]", id: "s3-uploader" do %>
+  <%= file_field_tag :file, multiple: false, class: 'hidden' %>
+<% end %>
+<div id="users_container"></div>
+<script id="template-upload" type="text/x-tmpl">
+<div id="file-{%=o.unique_id%}" class="upload">
+{%=o.name%}
+<div class="progress"><div class="bar" style="width: 0%"></div></div>
+</div>
+</script>

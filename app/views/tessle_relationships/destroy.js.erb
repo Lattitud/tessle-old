@@ -1,0 +1,4 @@
+$("#tessle<%= @tag.id %>").remove();
+$("#tessles").html("<%= current_user.tessles.count %>");
+$("#your_tessles").html("Tessles (<%= current_user.tessles.count %>)");
+$("#header_tessles").html("Tessles (<%= current_user.tessles.count %>)");

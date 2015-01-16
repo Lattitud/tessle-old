@@ -1,0 +1,12 @@
+<li id="message<%= message.id %>">
+  <div id="message<%= message.id %>_div" class="<%= unless current_user?(message.user) then "other_user_message" else "current_user_message" end %>">
+    <a href="<%= user_path(message.user) %>" class="mini-avatar-link">
+      <%= image_tag message.user.avatar.url(:mini) %>
+    </a>
+    <div class="message-div">
+      <p><%= message.content %></p>
+      <p class="message-details"><%= message.user.user_name %> <%= link_to "message", private_chat_user_path(message.user), remote: true unless current_user?(message.user) || guest_user?(message.user) %>
+      </p>
+    </div>
+  </div>
+</li>

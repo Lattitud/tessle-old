@@ -1,0 +1,19 @@
+<div class="side-chat chat-form-bottom" id='side-chat-block'>
+  <div class="side-chat-header">
+    <h2 class="h2-fix">live chat</h2>
+  </div>
+  <div id="side-chat-body" class="side-chat-body">
+    <ul class="chat list-style">
+      <% if @past_messages.any? %>
+      <%= render partial: "messages/message", collection: @past_messages %>
+      <p class="time-display">last message <%= time_ago_in_words(@past_messages.last.created_at) %> ago</p>
+      <% else %>
+      <p class="time-display">no previous messages.. be the first one!</p>
+      <% end %>
+      <li class="divider"></li>
+    </ul>
+
+    <ul id="new_<%= @messageable_type_lower %>_chat<%= @messageable_id %>" class="chat list-style"></ul>
+  </div>
+  <%= render :partial => 'messages/form', :locals => {:user_id => current_or_guest_user.id} %>
+</div>

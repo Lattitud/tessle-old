@@ -1,0 +1,5 @@
+$("#user_tessles").append("<%= j render(partial: 'tags/tag', locals: {:@user => current_user, :tag => @tag}) %>");
+$("#tessle<%= @tag.id %>").remove();
+$("#tessles").html("<%= current_user.tessles.count %>");
+$("#your_tessles").html("Tessles (<%= current_user.tessles.count %>)");
+$("#header_tessles").html("Tessles (<%= current_user.tessles.count %>)");

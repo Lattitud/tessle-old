@@ -1,0 +1,59 @@
+# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
+
+en:
+  devise:
+    confirmations:
+      confirmed: "Account confirmed!"
+      send_instructions: "Email instructions sent."
+      send_paranoid_instructions: "Email instructions sent already!"
+    failure:
+      already_authenticated: "You're signed in."
+      inactive: "Your account is not active."
+      invalid: "Invalid email or password."
+      locked: "Your account is locked, try again later."
+      last_attempt: "You have one more try!"
+      not_found_in_database: "Invalid email or password."
+      timeout: "You drooled too long. Please sign in again."
+      unauthenticated: "Sign in or sign up!"
+      unconfirmed: "Confirm your account to continue."
+    mailer:
+      confirmation_instructions:
+        subject: "Confirm it!"
+      reset_password_instructions:
+        subject: "Even lightbulbs forget - Password reset instructions"
+      unlock_instructions:
+        subject: "Unlock Instructions"
+    omniauth_callbacks:
+      failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
+      success: "Successfully authenticated from %{kind} account."
+    passwords:
+      no_token: "Oh! You are tricky...You can't access this page without a password reset email."
+      send_instructions: "You will receive instructions to reset your password. This will self-destruct in 10...9..."
+      send_paranoid_instructions: "If your email address exists, you will receive a password recovery email."
+      updated: "Your password was changed successfully. You are now signed in."
+      updated_not_active: "Your password was changed."
+    registrations:
+      destroyed: "Dude no! Your account was deleted. We hope to see you again soon."
+      signed_up: "Welcome! You're pretty cool."
+      signed_up_but_inactive: "You have signed up successfully but didn't activate your account."
+      signed_up_but_locked: "You have signed up successfully. However, your account is locked."
+      signed_up_but_unconfirmed: "Confirmation link sent."
+      update_needs_confirmation: "Verify your new email address. Check your email."
+      updated: "Roger. Updated!"
+    sessions:
+      signed_in: "Welcome back!"
+      signed_out: "Peace! See you soon."
+    unlocks:
+      send_instructions: "You will receive an email with instructions soon."
+      send_paranoid_instructions: "If your account exists, you will receive an email with instructions about how to unlock it in a few minutes."
+      unlocked: "Account unlocked. Please sign in to continue."
+  errors:
+    messages:
+      already_confirmed: "was already confirmed, please try signing in"
+      confirmation_period_expired: "needed to work faster than %{period}, please request again"
+      expired: "has expired, please request a new one"
+      not_found: "not found"
+      not_locked: "was not locked"
+      not_saved:
+        one: "1 error prohibited this %{resource} from being saved:"
+        other: "%{count} errors prohibited this %{resource} from being saved:"

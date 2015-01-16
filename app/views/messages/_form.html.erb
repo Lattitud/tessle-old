@@ -1,0 +1,7 @@
+<%= simple_form_for Message.new, remote: true, html: {id: "new_#{@messageable_type_lower}_message#{@messageable_id}"} do |f| %>
+  <%= f.text_area :content, placeholder: "Press Enter to send", id: "#{@messageable_type_lower}_message_content#{@messageable_id}", class: "message_content" %>
+  <%= hidden_field_tag :messageable_id, @messageable_id %>
+  <%= hidden_field_tag :messageable_type, @messageable_type_lower %>
+  <%= f.hidden_field :user_id, value: user_id %>
+  <%= f.submit "", id: "#{@messageable_type_lower}_send_button#{@messageable_id}", class: "send_button" %>
+<% end %>

@@ -1,0 +1,113 @@
+<!-- Runs when /posts/1/ is accessed -->
+<% provide(:title, @post.title) %>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-8">
+        <ul class="posts">
+          <li id="<%= "post#{@post.id}" %>">
+            <% if signed_in? && (current_user.following_user?(@post.user) || current_user?(@post.user)) %>
+              <div class="follow-post-block post-block">
+            <% else %>
+              <div class="no-follow-post-block post-block">
+            <% end %>
+              <div class="post-image-header">
+                <div class="post-image-block">
+                  <span class="image_placeholder">
+                      <%= image_tag @post.image_url(:thumb) %>
+                  </span>
+                </div>
+                <div class="post-header-block">
+                  <div><p><%= @post.votes_for %> chatted | <%= Pusher.get("/channels/presence-post-#{@post.id}", {:info => "user_count"})[:user_count] %> active</p></div>
+                  <div><p>Posted <%= time_ago_in_words(@post.created_at) %> ago</p></div>
+                  <div><p><span id="post-user"><%= link_to @post.user.user_name, @post.user %></span></p></div>
+                </div>
+              </div>
+
+              <div class="post-title"><a href="<%= if @post.url.blank? then @post.image_url else @post.url end %>" target="_blank"><%= @post.title %></a></div>
+
+              <div class="post-tessles">
+                <%= raw @post.tag_list.map {|t| link_to t, tag_path(t)}.join(' ') %>
+              </div>
+            </div >
+          </li>
+        </ul>
+
+      </div>
+
+      <div class="col-md-4" id="show-mid-span">
+        <div class="white_box" id="stats-box">
+          <h2 class="h2-fix" id="stats-header">Stats</h2>
+          <section class="stats">
+            <div class="stat-element">
+              <center>
+                <div class="show-stats-number"><%= @post.votes_for %></div>
+                <div class="show-stats-description">chatted</div>
+              </center>
+            </div>
+            <div class="stat-element">
+              <center>
+                <div class="show-stats-number"><%= @post.messages.count %></div>
+                <div class="show-stats-description">messages</div>
+              </center>
+            </div>
+          </section>
+          <section class="stats">
+            <div class="stat-element">
+              <center>
+                <div class="show-stats-number"><%= @post.impressionist_count(:filter=>:ip_address) %></div>
+                <div class="show-stats-description">views</div>
+              </center>
+            </div>
+            <div class="stat-element">
+              <center>
+                <div class="show-stats-number"><%= active_num = Pusher.get("/channels/presence-post-#{@post.id}", {:info => "user_count"})[:user_count] %></div>
+                <div class="show-stats-description">active</div>
+              </center>
+            </div>
+          </section>
+        </div>
+
+        <div class="white_box" id="current-users">
+          <% if active_num > 0 %>
+            <% if user_signed_in? %>
+            <h2 class="h2-fix">Online Users</h2>
+            <ul class="online-users" id="online-users"></ul>
+            <% else %>
+            <h2 class="h2-fix">Please sign in for chats!</h2>
+            <% end %>
+          <% end %>
+        </div>
+
+
+      </div>
+    </div>
+
+    </div>
+    <% if user_signed_in? %>
+    <div class="col-md-4" id="side-span">
+      <%= render partial: 'messages/side_chat' %>
+    </div>
+    <script>
+      $(function (){
+        var postChannel = socket.subscribe("presence-post-<%= @messageable_id %>");
+        var myDiv = document.getElementById("side-chat-body");
+        var current_user_id = "<%= current_user.id %>"
+
+        postChannel.bind('new_<%= @messageable_type_lower %>_message', function(data) {
+          var post_chat_id = $('#new_<%= @messageable_type_lower %>_chat' + data.id);
+          if(post_chat_id.length && (data.sender_id != current_user_id)) {
+            post_chat_id.append(data.html);
+            myDiv.scrollTop = myDiv.scrollHeight;
+          }
+        });
+
+        bindChatForm('<%= @messageable_id %>', '<%= @messageable_type_lower %>');
+        myDiv.scrollTop = myDiv.scrollHeight;
+
+      });
+    </script>
+    <% end %>
+  </div>
+

@@ -1,0 +1,6 @@
+<li id="tessle<%= tag.id %>" class="tessle">
+  <% if current_user?(@user) %>
+    <%= link_to "x", current_user.tessle_relationships.find_by_tag_id(tag), method: :delete, remote: true, class: "close", title: "Delete tessle" %>
+  <% end %>
+  <%= link_to tag.name, tag_path(:tag => tag.name), class: "tessle-name" %>
+</li>

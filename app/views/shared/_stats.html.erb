@@ -1,0 +1,45 @@
+<% @user ||= current_user # ||= assigns current_user if @user is nil, otherwise keeps @user the same %>
+<section class="stats">
+  <div class="stat-element">
+    <center>
+      <a href="<%= following_user_path(@user) %>">
+        <strong id="following" class="stat">
+          <%= @user.followed_users.count %>
+        </strong>
+        <span style="display: block">following</span>
+      </a>
+    </center>
+  </div>
+  <div class="stat-element">
+    <center>
+      <a href="<%= followers_user_path(@user) %>">
+        <strong id="followers" class="stat">
+          <%= @user.followers.count %>
+        </strong>
+        <span style="display: block">followers</span>
+      </a>
+    </center>
+  </div>
+</section>
+<section class="stats" style="margin-bottom:5%;">
+  <div class="stat-element">
+    <center>
+      <a href="<%= tags_user_path(@user) %>">
+        <strong id="tessles" class="stat">
+          <%= @user.tags.count %>
+        </strong>
+        <span style="display: block">tags</span>
+      </a>
+    </center>
+  </div>
+  <div class="stat-element">
+    <center>
+      <a href="<%= user_path(@user) %>">
+        <strong id="posts" class="stat">
+          <%= @user.posts.count %>
+        </strong>
+        <span style="display: block">posts</span>
+      </a>
+    </center>
+  </div>
+</section>

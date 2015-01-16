@@ -1,0 +1,7 @@
+<li id="tessle<%= suggested_tag.id %>" class="suggested_tessle">
+  <%= form_for(current_user.tessle_relationships.build(tag_id: suggested_tag.id), remote: true, html: {class: "follow_tessle" }) do |f| %>
+  <%= f.hidden_field :tag_id %>
+  <%= f.submit "&#10004;".html_safe, title: "Follow tessle" %>
+  <% end %>
+  <%= link_to suggested_tag.name, tag_path(:tag => suggested_tag.name), class: "tessle-name" %>
+</li>

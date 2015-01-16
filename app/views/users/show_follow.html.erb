@@ -1,0 +1,29 @@
+<!-- Runs when /users/1/followers or /users/1/following is accessed -->
+<% provide(:title, @title) %>
+
+<div class="row-fluid">
+  <aside class="col-md-3 white_box" id="user_sidebar">
+    <section>
+      <%= render 'shared/user_info' %>
+    </section>
+      <%= render 'shared/stats' %>
+      <% if signed_in? %>
+        <% if current_user?(@user) %>
+          <%= render 'shared/user_buttons' %>
+        <% else %>
+          <%= render 'shared/other_user_buttons' %>
+        <% end %>
+      <% end %>
+  </aside>
+  <div class="col-md-9 white_box user_box">
+    <% if @users.any? %>
+      <h3><%= @title %> (<%= @users.count %>)</h3>
+      <ul class="users">
+        <%= render @users %>
+      </ul>
+      <%= will_paginate @users %>
+    <% else %>
+      <h3>No <%= @title %></h3>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+# Options here can still be overridden by cmd line args in Procfile
+#   sidekiq -C config/sidekiq.yml
+
+:concurrency:  2
+:queues:
+  - [msg, 10]
+  - [notification, 9]
+  - [carrierwave_image, 8]
+  - [score, 7]
+  - [tessle, 5]
+  - [default, 3]

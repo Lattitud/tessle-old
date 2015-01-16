@@ -1,0 +1,5 @@
+$('#img_prev').attr('src', '<%= @thumb_url %>');
+$('#right_edit').html("<%= j render(partial: 'crop', locals: {:@user => current_user}) %>");
+$(function() {
+  return new AvatarCropper();
+});

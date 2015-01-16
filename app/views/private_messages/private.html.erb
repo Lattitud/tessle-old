@@ -1,0 +1,22 @@
+<% provide(:title, 'private') %>
+<div class="row-fluid">
+  <aside class="span3 white_box" id="user_sidebar">
+    <section>
+      <%= render 'shared/user_info' %>
+    </section>
+      <%= render 'shared/stats' %>
+      <% if signed_in? %>
+        <% if current_user?(@user) %>
+          <%= render 'shared/user_buttons' %>
+        <% else %>
+          <%= render 'shared/other_user_buttons' %>
+        <% end %>
+      <% end %>
+  </aside>
+  <div class="span9 white_box" id="private_box">
+    <h3>Private Messages</h3>
+    <ul class="private_users">
+      <%= render partial: 'users/private_user', collection: @recipients %>
+    </ul>
+  </div>
+</div>

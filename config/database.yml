@@ -1,0 +1,26 @@
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: tessle_development
+  pool: 5
+  username: dasun
+  password: 
+
+test: &TEST
+  adapter: postgresql
+  encoding: utf8
+  database: tessle_test
+  pool: 5
+  username: dasun
+  password: 
+
+# production:
+#   adapter: postgresql
+#   encoding: utf8
+#   database: buybuysell_production
+#   pool: 5
+#   username: 
+#   password:
+
+cucumber:
+  <<: *TEST

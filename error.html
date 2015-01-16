@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>tessle | 404 error</title>
+
+<style>
+  img.bg {
+    min-height: 100%;
+      background-attachment: fixed;
+    font-size:100%;
+      background-position: 50% 50%;
+    background-size: auto, cover;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    z-index:-2;
+  }
+
+  .blur{
+    height:250px;
+    width:100%;
+    margin:-20px auto;
+    z-index:-1;
+    position:relative;
+    filter: blur(10px); 
+    -webkit-filter: blur(10px); 
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: url(#blur);
+    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='10');
+    overflow:hidden;
+  }
+
+  .blur:after{
+    content:'';
+    height:100%;
+    width:100%;
+    background:rgba(0,0,0,.3);
+    position:absolute;
+  }
+  .blur:hover{
+    background:rgba(0,0,0,.8);
+  }
+
+  .widget{
+    border-top:2px solid black;
+    border-bottom:2px solid black;
+    height:200px;
+    width:100%;
+    overflow:hidden;
+  }
+
+  .center{
+    position:absolute;
+    margin: auto;
+    top:0; bottom:0; left:0; right:0;
+  }
+
+  h3 {
+    background: hsla(0,100%,100%,.9);
+    bottom: 0px;
+    color: #FF4e57;
+    -webkit-transition: all .1s ease-in-out;
+    -moz-transition: all .1s ease-in-out;
+    -o-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out;
+    font: .8em/1 source san pro, sans-serif;
+    left: 0;
+    padding: .5em 5em .5em 0em;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    text-decoration: underline;
+  }
+
+  h3:hover{
+    background: hsla(0,100%,100%,.99);
+    bottom: 0px;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .1s ease-in-out;
+    color: #000;
+    font: .9em/1 source san pro, sans-serif;
+    left: 0;
+    padding: .5em 5em .5em 0em;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    text-decoration: underline;
+  } 
+
+  .text {height:200px;width:240px;}
+  .text h1 {text-align:center;color:#FFf;margin-top:30px;font-family: 'HelveticaNeue-UltraLight', serif;font-weight:400;font-size:90px;}
+  .text p {text-align:center;color:#FFf;margin-top:-51px;font-family: 'HelveticaNeue-Light', serif;font-weight:400;font-size:17px;}
+</style>
+</head>
+
+<body>
+<div class="widget center">
+  <div class="text center">
+    <h1 class="">404</h1>
+    <p>Nothing to see here.</p>
+  </div>
+  <div class="blur">
+    <img src="http://i.imgur.com/hlgyq.gif" class="bg">
+  </div>
+</div>
+
+
+
+<img src="http://i.imgur.com/hlgyq.gif" class="bg">
+
+
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+ <filter id="blur">
+   <feGaussianBlur stdDeviation="10" />
+   </filter>
+</svg> 
+
+</body>
+
+</html>
